@@ -2,6 +2,8 @@ from pathlib import Path
 
 from decouple import config
 
+from celery.schedules import crontab
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -126,3 +128,12 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+POPULAR_QUERIES = ["english carabao cup", "afghanistan tour of bangladesh"]
+
+CELERY_BEAT_SCHEDULE = {
+    "fetch-popular-queries": {
+        "task": "videos.tasks.get_popular_queries",
+        "schedule": crontab(minute="*/2")
+    }
+}

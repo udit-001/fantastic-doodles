@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "rest_framework",
+    "django_celery_beat",
     "videos",
 ]
 
@@ -141,3 +142,5 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(minute="*/2")
     }
 }
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"

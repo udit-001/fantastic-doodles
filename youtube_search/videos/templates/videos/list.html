@@ -1,0 +1,36 @@
+{% load render_table from django_tables2 %}
+{% load bootstrap3 %}
+<!doctype html>
+<html>
+
+<head>
+    <title>Videos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    {{ filter.form.media.css }}
+    <style>
+        body {
+            padding-top: 70px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/api/videos/">API</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        {% if filter %}
+        <form action="" method="GET" class="form">
+            {% bootstrap_form filter.form %}
+            {% bootstrap_button 'filter' %}
+        </form>
+        {% endif %}
+        {% render_table table %}
+    </div>
+</body>
+
+</html>

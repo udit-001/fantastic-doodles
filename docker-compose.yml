@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+    image: youtube_search_web
+    ports:
+      - "8000:8000"
+    depends_on:
+      - "redis"
+      - "db"
+    env_file:
+      - ./compose/.env
+    entrypoint: /entrypoints/entrypoint.sh
+
+  db:
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=youtube_search
+      - POSTGRES_USER=youtube_search
+      - POSTGRES_PASSWORD=youtube_search
+
+  redis:
+    restart: always
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  celery_worker:
+    build:
+      context: .
+    image: youtube_search_celery_worker
+    depends_on:
+      - "redis"
+      - "db"
+      - "web"
+    env_file:
+      - ./compose/.env
+    entrypoint: /entrypoints/celery-entrypoint.sh
+
+  celery_beat:
+    build:
+      context: .
+    image: youtube_search_celery_beat
+    depends_on:
+      - "redis"
+      - "db"
+      - "web"
+    env_file:
+      - ./compose/.env
+    entrypoint: /entrypoints/celery-beat-entrypoint.sh
+
+volumes:
+  web-static:
+  redisdata:
+  postgres_data:

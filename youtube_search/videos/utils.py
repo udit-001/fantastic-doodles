@@ -1,13 +1,14 @@
+import json
+
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from django.conf import settings
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from googleapiclient import discovery
 from googleapiclient.errors import HttpError
 from httplib2 import Http
 
-from videos.models import SearchQuery, VideoResult
+from videos.models import SearchQuery, VideoResult, YoutubeKey
 
 logger = get_task_logger(__name__)
 
@@ -15,7 +16,12 @@ logger = get_task_logger(__name__)
 def search_youtube(query, timestamp):
     api_service_name = "youtube"
     api_version = "v3"
-    api_key = settings.YOUTUBE_API_KEY
+    if YoutubeKey.objects.filter(is_exhausted=False).exists():
+        api_key = YoutubeKey.objects.filter(is_exhausted=False).first().key
+    else:
+        logger.error(
+            "All API Keys exceeded quota limits, please supply new credentials")
+        return []
 
     http = Http(cache=".google_api_cache")
     youtube = discovery.build(
@@ -36,6 +42,16 @@ def search_youtube(query, timestamp):
     try:
         response = request.execute()
     except HttpError as err:
+        if err.resp.get('content-type', '').startswith('application/json'):
+            reason = json.loads(err.content).get(
+                'error').get('errors')[0].get('reason')
+            if reason == "quotaExceeded":
+                youtube_key = YoutubeKey.objects.get(key=api_key)
+                youtube_key.is_exhausted = True
+                youtube_key.save()
+                logger.warn(
+                    "API Key exceeded quota limits, marking this key as exhausted, switching keys")
+
         logger.error(
             "An error occurred while requesting data from YouTube API.")
 

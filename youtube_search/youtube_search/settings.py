@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from celery.schedules import crontab
-from decouple import config
+from decouple import config, Csv
 from dj_database_url import parse as db_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -126,7 +126,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-YOUTUBE_API_KEY = config("YOUTUBE_API_KEY")
+YOUTUBE_API_KEYS = config("YOUTUBE_API_KEYS", cast=Csv())
 
 CELERY_TIMEZONE = "Asia/Kolkata"
 CELERY_TASK_TRACK_STARTED = True

@@ -66,5 +66,5 @@ Update the value of the secret `YOUTUBE_API_KEYS` with a valid YouTube API crede
 ## Run the app
 The application can be started by executing the below command:
 ```
-docker-compose up --build
+docker-compose up -d --build
 ```

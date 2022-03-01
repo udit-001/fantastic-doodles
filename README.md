@@ -5,12 +5,14 @@ The following project makes use of the following stack:
 - Django 
 - Django Rest Framework
 
-## Implementation Features
+
+## Implemented Features
 - List API endpoint which returns all the fetched videos in reverse chronological order
 - Search API endpoint which returns videos matching given keyword against title or description
 - Custom home page which displays the stored videos in a table format and also allows filtering them based on which query they match and also allows sorting based on title, published date (which can be done by clicking on the column header).
 - The background task to fetch latest videos from YouTube is configured to run every 2 minutes.
 - The YouTube API calls are also being cached such that repeated queries for same result makes use of cached data if available.
+- Support for supplying multiple API keys so that if quota is exhausted on one, it automatically uses the next available key.
 
 
 ## API Usage
@@ -59,7 +61,7 @@ You need to create a .env file based of the example included in the repository b
 cp youtube_search/.env.example youtube_search/.env
 ```
 
-Update the value of the secret `YOUTUBE_API_KEY` with a valid YouTube API credentials
+Update the value of the secret `YOUTUBE_API_KEYS` with a valid YouTube API credentials
 
 ## Run the app
 The application can be started by executing the below command:

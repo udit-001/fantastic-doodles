@@ -59,6 +59,5 @@ services:
     entrypoint: /entrypoints/celery-beat-entrypoint.sh
 
 volumes:
-  web-static:
   redisdata:
   postgres_data:

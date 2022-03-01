@@ -45,3 +45,9 @@ cp youtube_search/.env.example youtube_search/.env
 ```
 
 Update the value of the secret `YOUTUBE_API_KEY` with a valid YouTube API credentials
+
+## Run the app
+The application can be started by executing the below command:
+```
+docker-compose up --build
+```

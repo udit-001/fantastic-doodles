@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from googleapiclient import discovery
+from googleapiclient.errors import HttpError
 from httplib2 import Http
 
 from videos.models import SearchQuery, VideoResult
@@ -30,20 +31,27 @@ def search_youtube(query, timestamp):
         publishedAfter=timestamp.isoformat()
     )
 
-    response = request.execute()
+    response = None
+
+    try:
+        response = request.execute()
+    except HttpError as err:
+        logger.error(
+            "An error occurred while requesting data from YouTube API.")
 
     output = []
 
-    if len(response["items"]):
-        for item in response["items"]:
-            data = {}
-            data["link"] = f"https://www.youtube.com/watch?v={item['id']['videoId']}"
-            data["description"] = item["snippet"]["description"]
-            data["title"] = item["snippet"]["title"]
-            data["thumbnail_url"] = item["snippet"]["thumbnails"]["medium"]["url"]
-            data["published_on"] = parse_datetime(
-                item["snippet"]["publishTime"])
-            output.append(data)
+    if response:
+        if len(response["items"]):
+            for item in response["items"]:
+                data = {}
+                data["link"] = f"https://www.youtube.com/watch?v={item['id']['videoId']}"
+                data["description"] = item["snippet"]["description"]
+                data["title"] = item["snippet"]["title"]
+                data["thumbnail_url"] = item["snippet"]["thumbnails"]["medium"]["url"]
+                data["published_on"] = parse_datetime(
+                    item["snippet"]["publishTime"])
+                output.append(data)
 
     return output
 

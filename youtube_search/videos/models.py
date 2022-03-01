@@ -1,6 +1,15 @@
 from django.db import models
 
 
+class YoutubeKey(models.Model):
+    key = models.CharField(max_length=255)
+    is_exhausted = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "YouTube Key"
+        verbose_name_plural = "YouTube Keys"
+
+
 class SearchQuery(models.Model):
     keyword = models.CharField(max_length=200)
     last_fetched_on = models.DateTimeField(null=True)

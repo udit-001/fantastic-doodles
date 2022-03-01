@@ -5,7 +5,7 @@ The following project makes use of the following stack:
 - Django 
 - Django Rest Framework
 
-## Implemented Features
+## Implementation Details
 - List API endpoint which returns all the fetched videos in reverse chronological order
 - Search API endpoint which returns videos matching given keyword against title or description
 - Custom home page which displays the stored videos in a table format and also allows filtering them based on which query they match and also allows sorting based on title, published date (which can be done by clicking on the column header).

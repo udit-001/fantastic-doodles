@@ -1,3 +1,10 @@
+## Overview
+
+The following project makes use of the following stack:
+- Python
+- Django 
+- Django Rest Framework
+
 ## Implemented Features
 - List API endpoint which returns all the fetched videos in reverse chronological order
 - Search API endpoint which returns videos matching given keyword against title or description

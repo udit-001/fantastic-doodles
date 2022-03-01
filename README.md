@@ -2,6 +2,7 @@
 - List API endpoint which returns all the fetched videos in reverse chronological order
 - Search API endpoint which returns videos matching given keyword against title or description
 - Custom page which displays the stored videos in a table format and also allows filtering them based on which query they match and also allows sorting based on title, published date (which can be done by clicking on the column header).
+- The background task to fetch latest videos from YouTube is configured to run every 2 minutes.
 
 
 ## API Usage

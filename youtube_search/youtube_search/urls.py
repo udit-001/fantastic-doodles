@@ -5,5 +5,5 @@ from videos.views import VideoList, VideoTableView
 urlpatterns = [
     path("", VideoTableView.as_view()),
     path('admin/', admin.site.urls),
-    path('videos/', VideoList.as_view())
+    path('api/videos/', VideoList.as_view())
 ]

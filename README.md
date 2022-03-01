@@ -38,7 +38,7 @@
 ]
 ```
 
-## Enviroment Variables
+## Environment Variables
 You need to create a .env file based of the example included in the repository by running the following command:
 ```
 cp youtube_search/.env.example youtube_search/.env
